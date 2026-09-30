@@ -1,0 +1,297 @@
+/* Wall: an affinity-mapping board from a UX workshop.
+   Palette: board #16423c · grid #1e5249 · chalk #f4f1e4 · sticky #ffe45c · ink #22211c
+   Answer notes rotate through: pink #ff9fc6, sky #8fd3ff, mint #9eebb8, lilac #c9b5ff */
+
+.page {
+  --board: #16423c;
+  --grid: #1e5249;
+  --chalk: #f4f1e4;
+  --sticky: #ffe45c;
+  --ink: #22211c;
+  --hand: var(--font-caveat), "Comic Sans MS", cursive;
+
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  color: var(--chalk);
+  background-color: var(--board);
+  background-image:
+    linear-gradient(var(--grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid) 1px, transparent 1px),
+    radial-gradient(120% 80% at 50% 0%, #1c5048 0%, transparent 70%);
+  background-size: 40px 40px, 40px 40px, 100% 100%;
+  background-attachment: fixed;
+}
+
+/* Top bar */
+.topbar {
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 20px;
+  padding-right: 240px;
+  background: linear-gradient(var(--board) 55%, transparent);
+}
+.boardName {
+  white-space: nowrap;
+  font-family: var(--hand);
+  font-size: 26px;
+  line-height: 1;
+}
+.clear {
+  border: 1.5px dashed rgb(244 241 228 / 0.5);
+  background: transparent;
+  color: var(--chalk);
+  padding: 5px 12px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  white-space: nowrap;
+  margin-left: auto;
+}
+.clear:hover { border-style: solid; }
+
+/* Board */
+.board {
+  flex: 1;
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 16px 20px 220px;
+}
+
+/* Intro */
+.intro {
+  padding-top: clamp(24px, 8vh, 80px);
+  text-align: center;
+}
+.headline {
+  text-wrap: balance;
+  position: relative;
+  display: inline-block;
+  font-family: var(--hand);
+  font-weight: 700;
+  font-size: clamp(48px, 9vw, 92px);
+  line-height: 0.95;
+  margin: 0 0 18px;
+  max-width: 12ch;
+}
+.underline {
+  position: absolute;
+  left: 5%;
+  right: 5%;
+  bottom: -14px;
+  width: 90%;
+  height: 20px;
+}
+.underline path {
+  fill: none;
+  stroke: var(--sticky);
+  stroke-width: 4;
+  stroke-linecap: round;
+  stroke-dasharray: 320;
+  stroke-dashoffset: 320;
+  animation: drawLine 0.9s ease 0.6s forwards;
+}
+@keyframes drawLine { to { stroke-dashoffset: 0; } }
+
+.subline {
+  color: rgb(244 241 228 / 0.75);
+  margin: 20px auto 40px;
+  max-width: 44ch;
+}
+
+.suggestions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 22px;
+}
+
+/* Notes */
+.note {
+  position: relative;
+  color: var(--ink);
+  border: 0;
+  text-align: left;
+  box-shadow:
+    0 1px 0 rgb(0 0 0 / 0.08),
+    0 18px 24px -14px rgb(0 0 0 / 0.55),
+    inset 0 -18px 24px -20px rgb(0 0 0 / 0.18);
+}
+.qNote {
+  background: var(--sticky);
+  font-family: var(--hand);
+  font-size: 25px;
+  line-height: 1.1;
+  padding: 26px 18px 20px;
+  width: 190px;
+  min-height: 150px;
+  border-radius: 2px 2px 18px 2px;
+  overflow-wrap: anywhere;
+}
+.suggestion { cursor: pointer; }
+
+.tape {
+  position: absolute;
+  top: -10px;
+  left: 50%;
+  width: 64px;
+  height: 20px;
+  translate: -50% 0;
+  rotate: -3deg;
+  background: rgb(255 255 255 / 0.5);
+  box-shadow: 0 1px 2px rgb(0 0 0 / 0.12);
+}
+
+/* Rows */
+.rows {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+.row {
+  display: grid;
+  grid-template-columns: 190px 80px 1fr;
+  align-items: start;
+}
+
+.arrow {
+  width: 80px;
+  height: 40px;
+  margin-top: 50px;
+  overflow: visible;
+}
+.arrowLine, .arrowHead {
+  fill: none;
+  stroke: var(--chalk);
+  stroke-width: 2.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 100;
+  stroke-dashoffset: 100;
+}
+.arrowLine { animation: drawLine 0.5s ease 0.25s forwards; }
+.arrowHead { animation: drawLine 0.3s ease 0.7s forwards; }
+
+.aNote {
+  padding: 34px 22px 18px;
+  border-radius: 2px 18px 2px 2px;
+  font-size: 16.5px;
+  line-height: 1.5;
+  max-width: 520px;
+  min-height: 130px;
+  overflow-wrap: anywhere;
+}
+.pin {
+  position: absolute;
+  top: 10px;
+  left: 50%;
+  width: 14px;
+  height: 14px;
+  translate: -50% 0;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, #ff7a7a, #c62828 70%);
+  box-shadow: 0 3px 4px rgb(0 0 0 / 0.35);
+}
+.aText p { margin: 0; }
+.aText p + p, .aText p + ul, .aText ul + p { margin-top: 10px; }
+.aText ul { margin: 0; padding-left: 20px; }
+
+.sign {
+  display: block;
+  margin-top: 10px;
+  text-align: right;
+  font-family: var(--hand);
+  font-size: 22px;
+  opacity: 0.75;
+}
+
+.word {
+  display: inline-block;
+  animation: ink 0.35s ease both;
+}
+@keyframes ink {
+  from { opacity: 0; transform: translateY(3px) rotate(-2deg); }
+  to { opacity: 1; transform: none; }
+}
+
+.scribble { width: 120px; height: 30px; }
+.scribble path {
+  fill: none;
+  stroke: var(--ink);
+  stroke-width: 2.5;
+  stroke-linecap: round;
+  stroke-dasharray: 180;
+  stroke-dashoffset: 180;
+  animation: scribble 1.4s ease-in-out infinite;
+}
+@keyframes scribble {
+  0% { stroke-dashoffset: 180; }
+  60% { stroke-dashoffset: 0; opacity: 1; }
+  100% { stroke-dashoffset: 0; opacity: 0; }
+}
+
+/* Sticky pad composer */
+.pad {
+  position: fixed;
+  z-index: 10;
+  left: 0;
+  right: 0;
+  bottom: max(18px, env(safe-area-inset-bottom));
+  margin: 0 auto;
+  width: calc(100% - 32px);
+  max-width: 560px;
+  display: flex;
+  align-items: flex-end;
+  gap: 10px;
+  padding: 16px 14px 14px 20px;
+  background: var(--sticky);
+  color: var(--ink);
+  border-radius: 2px 2px 20px 2px;
+  box-shadow:
+    0 4px 0 -1px #f2d43f,
+    0 8px 0 -2px #e5c52e,
+    0 26px 40px -16px rgb(0 0 0 / 0.6);
+}
+.pad textarea {
+  flex: 1;
+  resize: none;
+  border: 0;
+  outline: none;
+  background: transparent;
+  font-family: var(--hand);
+  font-size: 26px;
+  line-height: 1.15;
+  color: var(--ink);
+}
+.pad textarea::placeholder { color: rgb(34 33 28 / 0.45); }
+
+.stick {
+  flex: none;
+  border: 0;
+  background: var(--ink);
+  color: var(--sticky);
+  font-weight: 700;
+  font-size: 15px;
+  padding: 11px 18px;
+  border-radius: 12px;
+}
+.stick:disabled { opacity: 0.35; cursor: default; }
+.stop { background: #c62828; color: #fff; }
+
+@media (max-width: 640px) {
+  .topbar { padding-right: 20px; padding-top: 60px; }
+  .row { grid-template-columns: 1fr; justify-items: start; }
+  .row .qNote { width: 70%; min-height: 0; }
+  .arrow { rotate: 70deg; margin: 6px 0 0 30%; }
+  .aNote { width: 100%; }
+  .suggestions { gap: 16px; }
+  .suggestion { width: 44%; min-height: 120px; font-size: 22px; }
+}

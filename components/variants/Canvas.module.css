@@ -1,0 +1,352 @@
+/* Canvas — a Figma-style multiplayer canvas.
+   Palette: canvas #edeff2 · dots #c5cbd4 · ink #1a1f2b · muted #5b6372 · me #d6336c · selection #0d99ff */
+
+.page {
+  --canvas: #edeff2;
+  --dot: #c5cbd4;
+  --ink: #1a1f2b;
+  --muted: #5b6372;
+  --line: #d8dde5;
+  --paper: #fff;
+  --me: #d6336c;
+  --sel: #0d99ff;
+  --you: #0f9d8a;
+  --col: 700px;
+
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  color: var(--ink);
+  background-color: var(--canvas);
+  background-image: radial-gradient(var(--dot) 1px, transparent 1.2px);
+  background-size: 22px 22px;
+  background-attachment: fixed;
+}
+
+/* Presence cursor */
+.presence {
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 60;
+  pointer-events: none;
+}
+.youTag {
+  display: block;
+  background: var(--you);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1;
+  padding: 4px 7px;
+  border-radius: 2px 7px 7px 7px;
+}
+
+/* Top bar */
+.topbar {
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 16px 20px;
+  padding-right: 240px;
+  background: linear-gradient(var(--canvas) 55%, transparent);
+}
+.frameName {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--muted);
+}
+.ghost {
+  border: 1px solid var(--line);
+  background: var(--paper);
+  padding: 5px 12px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 600;
+}
+.ghost:hover { border-color: var(--ink); }
+
+/* Column */
+.frame {
+  flex: 1;
+  width: 100%;
+  max-width: var(--col);
+  margin: 0 auto;
+  padding: 8px 20px 170px;
+}
+.isEmpty { display: flex; align-items: center; }
+
+/* Intro */
+.intro { width: 100%; }
+.introMark { position: relative; height: 58px; }
+.heroCursor {
+  position: absolute;
+  left: 0;
+  top: 0;
+  animation: glide 1.5s cubic-bezier(0.2, 0.8, 0.2, 1) 0.1s both;
+}
+@keyframes glide {
+  0% { transform: translate(min(60vw, 520px), 220px) rotate(-8deg); opacity: 0; }
+  15% { opacity: 1; }
+  65% { transform: translate(-8px, 6px) rotate(0); }
+  80% { transform: translate(2px, -2px); }
+  100% { transform: translate(0, 0); }
+}
+
+.headline {
+  text-wrap: balance;
+  font-family: var(--font-bricolage), system-ui, sans-serif;
+  font-weight: 700;
+  font-size: clamp(44px, 8.5vw, 84px);
+  line-height: 0.96;
+  letter-spacing: -0.04em;
+  margin: 0 0 20px;
+  max-width: 11ch;
+}
+.hWord {
+  display: inline-block;
+  animation: rise 0.7s cubic-bezier(0.2, 0.9, 0.2, 1) both;
+}
+@keyframes rise {
+  from { opacity: 0; transform: translateY(0.45em) rotate(3deg); filter: blur(8px); }
+  to { opacity: 1; transform: none; filter: none; }
+}
+
+.subline {
+  color: var(--muted);
+  margin: 0 0 32px;
+  max-width: 44ch;
+  animation: fade 0.6s ease 1s both;
+}
+@keyframes fade { from { opacity: 0; } to { opacity: 1; } }
+
+.prompts { display: flex; flex-wrap: wrap; gap: 8px; }
+.prompt {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid var(--line);
+  background: var(--paper);
+  padding: 9px 14px;
+  border-radius: 10px;
+  font-size: 15px;
+  text-align: left;
+  box-shadow: 0 1px 0 rgb(26 31 43 / 0.04);
+}
+.prompt:hover { border-color: #9747ff; }
+.promptIcon { color: #9747ff; font-size: 12px; }
+
+/* Thread */
+.thread {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 26px;
+}
+
+.q {
+  align-self: flex-end;
+  max-width: 82%;
+  background: var(--ink);
+  color: #fff;
+  padding: 11px 16px;
+  border-radius: 16px 16px 4px 16px;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  transform-origin: bottom right;
+}
+
+.a {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  max-width: 92%;
+  padding-top: 20px;
+}
+
+.cursor {
+  display: inline-flex;
+  align-items: flex-start;
+  color: var(--me);
+  pointer-events: none;
+}
+.cursor svg { flex: none; filter: drop-shadow(0 1px 1px rgb(26 31 43 / 0.25)); }
+.tag {
+  margin: 14px 0 0 -2px;
+  background: var(--me);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1;
+  padding: 5px 8px;
+  border-radius: 2px 8px 8px 8px;
+  white-space: nowrap;
+}
+
+.aCursor {
+  position: absolute;
+  left: -10px;
+  top: -4px;
+  z-index: 2;
+}
+
+/* Selection frame: drawn around the latest answer */
+.selection {
+  position: relative;
+  margin-left: 16px;
+  margin-top: 14px;
+}
+.selection::before {
+  content: "";
+  position: absolute;
+  inset: -5px;
+  border: 1.5px solid var(--sel);
+  border-radius: 2px;
+  opacity: 0;
+  pointer-events: none;
+}
+.isLatest .selection::before {
+  opacity: 1;
+  animation: draw 0.6s cubic-bezier(0.6, 0, 0.2, 1) 0.25s both;
+}
+@keyframes draw {
+  from { clip-path: inset(0 100% 100% 0); }
+  to { clip-path: inset(0 0 0 0); }
+}
+
+.handle {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  background: #fff;
+  border: 1.5px solid var(--sel);
+  z-index: 1;
+  opacity: 0;
+  transform: scale(0);
+}
+.tl { left: -9px; top: -9px; }
+.tr { right: -9px; top: -9px; }
+.bl { left: -9px; bottom: -9px; }
+.br { right: -9px; bottom: -9px; }
+.isLatest .handle { animation: pop 0.3s cubic-bezier(0.3, 1.6, 0.5, 1) both; }
+.isLatest .tl { animation-delay: 0.25s; }
+.isLatest .tr { animation-delay: 0.45s; }
+.isLatest .br { animation-delay: 0.6s; }
+.isLatest .bl { animation-delay: 0.75s; }
+@keyframes pop { to { opacity: 1; transform: scale(1); } }
+
+.dims {
+  position: absolute;
+  left: 50%;
+  bottom: -30px;
+  transform: translateX(-50%);
+  background: var(--sel);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 3px 7px;
+  border-radius: 3px;
+  white-space: nowrap;
+  animation: fade 0.3s ease 0.8s both;
+}
+
+.aBody {
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 4px 16px 16px 16px;
+  padding: 14px 18px;
+  box-shadow: 0 1px 0 rgb(26 31 43 / 0.04), 0 10px 28px -14px rgb(26 31 43 / 0.22);
+  overflow-wrap: anywhere;
+  animation: card 0.45s cubic-bezier(0.2, 0.9, 0.2, 1) both;
+}
+@keyframes card {
+  from { opacity: 0; transform: scale(0.94); transform-origin: top left; }
+  to { opacity: 1; transform: none; }
+}
+.aBody p { margin: 0; }
+.aBody p + p, .aBody p + ul, .aBody ul + p { margin-top: 10px; }
+.aBody ul { margin: 0; padding-left: 20px; }
+.aBody li + li { margin-top: 4px; }
+
+.word {
+  display: inline-block;
+  animation: wordIn 0.45s ease both;
+}
+@keyframes wordIn {
+  from { opacity: 0; filter: blur(6px); transform: translateY(4px); }
+  to { opacity: 1; filter: none; transform: none; }
+}
+
+.thinking { display: inline-flex; gap: 5px; padding: 6px 2px; }
+.thinking i {
+  width: 7px;
+  height: 7px;
+  border-radius: 2px;
+  background: var(--me);
+  animation: bounce 1s ease-in-out infinite;
+}
+.thinking i:nth-child(2) { animation-delay: 0.15s; background: #9747ff; }
+.thinking i:nth-child(3) { animation-delay: 0.3s; background: var(--sel); }
+@keyframes bounce {
+  0%, 100% { transform: translateY(0) rotate(0); }
+  50% { transform: translateY(-6px) rotate(45deg); }
+}
+
+/* Floating toolbar */
+.toolbar {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: max(20px, env(safe-area-inset-bottom));
+  margin: 0 auto;
+  width: calc(100% - 32px);
+  max-width: calc(var(--col) - 24px);
+  display: flex;
+  align-items: flex-end;
+  gap: 8px;
+  padding: 8px 8px 8px 18px;
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  box-shadow: 0 14px 44px -14px rgb(26 31 43 / 0.35);
+}
+.toolbar:focus-within { border-color: var(--ink); }
+.toolbar textarea {
+  flex: 1;
+  resize: none;
+  border: 0;
+  outline: none;
+  background: transparent;
+  padding: 9px 0;
+  max-height: 160px;
+  line-height: 1.45;
+}
+.toolbar textarea::placeholder { color: var(--muted); }
+
+.send {
+  flex: none;
+  width: 40px;
+  height: 40px;
+  display: grid;
+  place-items: center;
+  border: 0;
+  border-radius: 12px;
+  background: var(--me);
+  color: #fff;
+}
+.send:disabled { background: var(--line); color: var(--muted); cursor: default; }
+.stop { background: var(--ink); }
+
+@media (max-width: 600px) {
+  .topbar { padding-right: 20px; padding-top: 60px; }
+  .q, .a { max-width: 100%; }
+}

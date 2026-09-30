@@ -1,0 +1,11 @@
+node_modules
+.next
+.env*.local
+.env
+next-env.d.ts
+*.tsbuildinfo
+.DS_Store
+
+# Local-only
+.claude/
+ICA-NOTES*.md
